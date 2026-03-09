@@ -1,0 +1,36 @@
+{
+    "name": "maxis/eloquent-guard",
+    "description": "Runtime Eloquent performance monitor",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Maxis\\EloquentGuard\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Maxis\\EloquentGuard\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Maxis\\EloquentGuard\\EloquentGuardServiceProvider"
+            ]
+        }
+    },
+    "require": {
+        "php": "^8.2",
+        "illuminate/support": "^10.0|^11.0|^12.0"
+    },
+    "require-dev": {
+        "laravel/pulse": "^1.0",
+        "livewire/livewire": "^3.0",
+        "orchestra/testbench": "^10.9",
+        "phpunit/phpunit": "^12.5"
+    },
+    "suggest": {
+        "laravel/pulse": "Required to see beautiful dashboards in Pulse.",
+        "livewire/livewire": "Required for the Pulse dashboard components."
+    }
+}
