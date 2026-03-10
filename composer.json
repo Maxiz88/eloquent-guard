@@ -20,7 +20,7 @@
             ]
         }
     },
-    "keywords": ["laravel", "eloquent", "performance", "n+1", "monitoring", "pulse"],
+    "keywords": ["laravel", "eloquent", "performance", "n-plus-one", "monitoring", "pulse"],
     "authors": [
         {
             "name": "Maksym Kosenko",
