@@ -4,29 +4,29 @@ namespace Maxis\EloquentGuard\Reporters;
 
 use Maxis\EloquentGuard\Contracts\Reporter;
 use Illuminate\Database\Events\QueryExecuted;
+use Maxis\EloquentGuard\Jobs\SendSentryNotification;
 
 class SentryReporter implements Reporter
 {
     public function handleNPlusOne(QueryExecuted $query, string $source, array $data): void
     {
-        $this->capture('Eloquent N+1 Detected', $query, $source, $data);
+        $this->capture('Eloquent N+1 Detected', $query->sql, $source, $data);
     }
 
     public function handleSlowQuery(QueryExecuted $query, string $source, array $data): void
     {
-        $this->capture('Eloquent Slow Query', $query, $source, $data);
+        $this->capture('Eloquent Slow Query', $query->sql, $source, $data);
     }
 
-    protected function capture(string $message, $query, $source, $data): void
+    protected function capture(string $message, string $sql, string $source, array $data): void
     {
-        if (app()->bound('sentry')) {
-            \Sentry\withScope(function (\Sentry\State\Scope $scope) use ($message, $source, $data) {
-                $scope->setExtra('source', $source);
-                $scope->setExtra('data', $data);
-                $scope->setTag('package', 'eloquent-guard');
+        if (str_contains(strtolower($sql), 'jobs') || str_contains(strtolower($sql), 'sentry')) {
+            return;
+        }
 
-                \Sentry\captureMessage($message);
-            });
+        if (app()->bound('sentry')) {
+            SendSentryNotification::dispatch($message, $sql, $source, $data);
         }
     }
+
 }

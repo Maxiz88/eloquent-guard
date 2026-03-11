@@ -1,7 +1,7 @@
 # Eloquent Guard for Laravel 🛡️
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/maxis/eloquent-guard)](https://packagist.org)
-[![Total Downloads](https://img.shields.io/packagist/dt/maxis/eloquent-guard)](https://packagist.org)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/maxis/laravel-eloquent-guard)](https://packagist.org)
+[![Total Downloads](https://img.shields.io/packagist/dt/maxis/laravel-eloquent-guard)](https://packagist.org)
 
 **Eloquent Guard** is a lightweight, production-ready runtime performance monitor for Laravel. It detects N+1 queries and slow database operations as they happen, helping you keep your application fast and efficient.
 
@@ -14,12 +14,25 @@
 - **Multi-channel Reporting**: Built-in support for Log, Slack, Telegram, and Sentry.
 - **Zero Configuration**: Works out of the box with sensible defaults.
 
+## 📢 Multi-Channel Reporting
+
+Stay informed where your team already works. All alerts include a **Smart Backtrace** that points directly to your code, skipping the `vendor/` noise.
+
+
+| Channel | Preview                                                                                                                                                                                                                                                                                                                                                                          |
+| :--- |:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Slack** | ![Slack Alert](art/slack.png)                                                                                                                                                                                                                                                                                                                                                    |
+| **Telegram** | ![Telegram Alert](art/telegram.png)                                                                                                                                                                                                                                                                                                                                              |
+| **Sentry** | ![Sentry Issue](art/sentry.png)                                                                                                                                                                                                                                                                                                                                                  |
+| **Laravel Logs** | <code>[2026-03-09 21:27:16] local.WARNING: Eloquent Guard: N+1 detected! {"sql":"select * from `users` where `users`.`id` = ? limit 1","count":5,"source":"/var/www/html/routes/web.php:9"}</code><br><code>[2026-03-09 21:27:17] local.CRITICAL: Eloquent Guard: Slow Query! {"sql":"SELECT SLEEP(1)","duration":"1000.47ms","source":"/var/www/html/routes/web.php:13"}</code> |
+
+
 ## 🚀 Installation
 
 You can install the package via composer:
 
 ```bash
-composer require maxis/eloquent-guard
+composer require maxis/laravel-eloquent-guard
 ```
 ## Usage
 ### Publish Configuration
@@ -35,6 +48,9 @@ ELOQUENT_GUARD_SLACK_WEBHOOK=https://hooks.slack.com...
 ELOQUENT_GUARD_TELEGRAM_TOKEN=your-bot-token
 ELOQUENT_GUARD_TELEGRAM_CHAT_ID=your-chat-id
 ```
+> [!IMPORTANT]
+> **Queue Worker Required:** To ensure your application's performance is not affected, reporting (Slack, Telegram, Sentry) is handled via Laravel's queue system. Make sure your queue worker is running (`php artisan queue:work`) to receive alerts.
+
 ### ⚙️ Configuration
 Once published, you can find the settings in config/eloquent-guard.php.
 #### Thresholds & Limits
@@ -62,6 +78,9 @@ Prevent noise from system tables (like sessions or cache):
 ```
 ### 📊 Laravel Pulse Integration
 Eloquent Guard comes with a dedicated Laravel Pulse card to visualize N+1 and Slow Query trends directly in your dashboard.
+
+![Eloquent Guard Pulse Card](art/pulse.png)
+
 #### Add the Card to Dashboard
 Include the Livewire component in your resources/views/vendor/pulse/dashboard.blade.php:
 ```html

@@ -4,7 +4,7 @@ namespace Maxis\EloquentGuard\Reporters;
 
 use Maxis\EloquentGuard\Contracts\Reporter;
 use Illuminate\Database\Events\QueryExecuted;
-use Illuminate\Support\Facades\Http;
+use Maxis\EloquentGuard\Jobs\SendTelegramNotification;
 
 class TelegramReporter implements Reporter
 {
@@ -20,15 +20,6 @@ class TelegramReporter implements Reporter
 
     protected function send(string $message): void
     {
-        $token = config('eloquent-guard.telegram.token');
-        $chatId = config('eloquent-guard.telegram.chat_id');
-
-        if ($token && $chatId) {
-            Http::post("https://api.telegram.org{$token}/sendMessage", [
-                'chat_id' => $chatId,
-                'text' => $message,
-                'parse_mode' => 'Markdown',
-            ]);
-        }
+        SendTelegramNotification::dispatch($message);
     }
 }
