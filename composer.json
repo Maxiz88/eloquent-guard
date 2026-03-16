@@ -3,6 +3,7 @@
     "description": "Runtime Eloquent performance monitor",
     "license": "MIT",
     "type": "library",
+    "homepage": "https://github.com/Maxiz88/laravel-eloquent-guard",
     "autoload": {
         "psr-4": {
             "Maxis\\EloquentGuard\\": "src/"
