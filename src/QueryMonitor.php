@@ -71,7 +71,7 @@ class QueryMonitor
      */
     protected function getFingerprint(string $sql): string
     {
-        return md5(preg_replace(['/\d+/', '/\'.*?\'/'], '?', $sql));
+        return hash('xxh128', preg_replace(['/\d+/', '/\'.*?\'/'], '?', $sql));
     }
 
     /**
